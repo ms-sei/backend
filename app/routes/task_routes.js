@@ -1,110 +1,66 @@
 const express = require('express')
-
+// import passport 
+const passport = require('passport')
+//JWT
+const requireToken = passport.authenticate('bearer', {session:false})
+//Index 
 const router = express.Router()
 
-const {Task} = require ('../models/task') //add new task 
-const {User} = require('../models/user')
+//import models 
+const { User, Task } = require('../models/user')
 
+const customErrors = require('../../lib/custom_errors')
 const requireOwnership = customErrors.requireOwnership;
 
 const handle404 = customErrors.handle404
-// import passport 
-
-const passport = require('passport');
-//JWT
-const requireToken = passport.authenticate('bearer', {session:false})
-
-//Index 
-
-//GET // tasks
-
-router.get('/tasks', requireToken, (req,res,next) => {
-    const userId = req.user._id;
-    Task.find({'owner': userId})
-    .then( tasks => { 
-        res.status(200).json({tasks:tasks}); 
-
-    })
-    .catch(next)
-
-
+//INDEX
+// GET // tasks
+router.get('/tasks',requireToken, (req,res,next) => {
+    res.send(req.user.tasks)
 })
-//CREATE
-
+// CREATE
 router.post('/tasks', requireToken, (req,res,next)=>{
-    const newTask = new Task(req.body.task)
-    const user = User.update(
+    const newTask = new Task(req.body)
+    User.update(
         {_id: req.user._id},
-        {$push: {tasks: newTask}} //
+        {$push: {tasks: newTask}}
     )
     .then(
-        processDetail => console.log(process)
+        updateInfo => res.status(201).send(updateInfo)
     )
     .catch(
-        err => console.log(err)
+        err => res.status(400).send(err)
     )
-    // const userId = req.user._id;
-    
-    // newTask.admin = userId;
-
-    // Task.create(newTask)
-    // .then( task => { 
-    //     res.status(201).json({task:task})
-    // })
-    // .catch(next)
+})
+// //show a specific task by a specific user
+router.get('/tasks/:id', requireToken,(req, res)=> {
+    const task =  req.user.tasks.find(task => String(task._id) === req.params.id)
+    res.send(task)
 })
 
-
-//SHOW
-//GET -- /tasks/:id
-
-router.get('/tasks:id', requireToken,(req,res, next)=>{
-    const taskId = req.params.id;
-
-    Task.findById(taskId)
-    .then( task => {
-        requireOwnership( req, task)
-        res.status(200).json({
-            task:task
-        })
-    })
-    .catch(next)
-
-})
-//Update an existing task 
-//PATCH / tasks/:id
 router.patch('/tasks/:id', requireToken , (req,res,next)=>{
-
-    const taskId = req.params.id;
-    const updateTask = req.body.task;
-    Task.findById(taskId, updateTask) 
-    .then( (task) => {
-        requireOwnership(req,task)
-
-        return task.update(updateTask)
-    })
-    .then( ()=>res.status(204))
-    .catch(next)
-
-
+    const newTask = new Task(req.body) 
+    const taskIndex = req.user.tasks.findIndex(task => String(task._id) === req.params.id)
+    req.user.tasks[taskIndex] = newTask
+    req.user.save()
+    .then(
+        user => res.send(user)
+    )
+    .catch(
+        err => res.send(err)
+    )
 })
 
-//Delete --DESTROY a task
-router.delete('tasks/taskid',requireToken,(req,res,next)=>{
-
-    const taskId = req.params.taskId;
-
-    Task.findbyId(taskId)
-
-    .then(
-        task => {
-            requireOwnership (req,task)
-            return task.remove()
-
-        }
-    )
-    .then(()=>res.sendStatus(204))
-    .catch(next)
-} )
-
+// // Delete --DESTROY a task
+router.delete('/tasks/:id', requireToken, (req, res) => {
+        const taskIndex = req.user.tasks.findIndex(task => String(task._id) === req.params.id)
+        req.user.tasks.splice(taskIndex, 1)
+        req.user.save()
+        .then(
+            user => res.send("Task was deleted")
+        )
+        .catch(
+            err => res.send(err)
+        )
+})
 module.exports = router

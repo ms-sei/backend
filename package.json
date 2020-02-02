@@ -6,13 +6,15 @@
   "scripts": {
     "start": "nodemon server.js",
     "test": "mocha --exit",
+    "server": "nodemon server.js",
+    "serve": "nodemon server.js",
+    "s": "nodemon server.js",
     "debug-server": "DEBUG=express:* nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.3",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
