@@ -33,7 +33,7 @@ router.get('/tasks', requireToken, (req,res,next) => {
 router.post('/tasks', requireToken, (req,res,next)=>{
     const userId = req.user._id;
     const newTask = req.body.task;
-    newTask.owner = userId;
+    newTask.admin = userId;
 
     Task.create(newTask)
     .then( task => { 
