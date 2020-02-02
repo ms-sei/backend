@@ -32,12 +32,13 @@ router.post('/tasks', requireToken, (req,res,next)=>{
         err => res.status(400).send(err)
     )
 })
-// //show a specific task by a specific user
+
+ //show a specific task by a specific user
 router.get('/tasks/:id', requireToken,(req, res)=> {
     const task =  req.user.tasks.find(task => String(task._id) === req.params.id)
     res.send(task)
 })
-
+//edit update
 router.patch('/tasks/:id', requireToken , (req,res,next)=>{
     const newTask = new Task(req.body) 
     const taskIndex = req.user.tasks.findIndex(task => String(task._id) === req.params.id)
