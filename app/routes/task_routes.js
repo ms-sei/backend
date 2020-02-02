@@ -2,7 +2,8 @@ const express = require('express')
 
 const router = express.Router()
 
-const Task = require ('../models/task') //add new task 
+const {Task} = require ('../models/task') //add new task 
+const {User} = require('../models/user')
 
 const requireOwnership = customErrors.requireOwnership;
 
@@ -31,15 +32,26 @@ router.get('/tasks', requireToken, (req,res,next) => {
 //CREATE
 
 router.post('/tasks', requireToken, (req,res,next)=>{
-    const userId = req.user._id;
-    const newTask = req.body.task;
-    newTask.admin = userId;
+    const newTask = new Task(req.body.task)
+    const user = User.update(
+        {_id: req.user._id},
+        {$push: {tasks: newTask}} //
+    )
+    .then(
+        processDetail => console.log(process)
+    )
+    .catch(
+        err => console.log(err)
+    )
+    // const userId = req.user._id;
+    
+    // newTask.admin = userId;
 
-    Task.create(newTask)
-    .then( task => { 
-        res.status(201).json({task:task})
-    })
-    .catch(next)
+    // Task.create(newTask)
+    // .then( task => { 
+    //     res.status(201).json({task:task})
+    // })
+    // .catch(next)
 })
 
 
