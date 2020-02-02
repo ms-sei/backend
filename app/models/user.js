@@ -2,14 +2,15 @@ const mongoose = require('mongoose')
 
 const taskSchema = new mongoose.Schema({
   title:{
-      type: String,
-      required: true
+      type: String
   },
   description:{
-      type: String,
-      required: true
+      type: String
   }
+},{
+  timestamps:true
 })
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -20,8 +21,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  token: String,
-  tasks: [taskSchema]
+  tasks:[taskSchema],
+  token: String
 }, {
   timestamps: true,
   toObject: {
@@ -42,4 +43,4 @@ userSchema.virtual('examples', {
 const User = mongoose.model('User', userSchema)
 const Task = mongoose.model("Task", taskSchema)
 
-module.exports = {User, Task}
+module.exports = { User, Task }

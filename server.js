@@ -32,8 +32,10 @@ const expressPort = 3000
 // establish database connection
 mongoose.Promise = global.Promise
 mongoose.connect(db, {
-  useMongoClient: true
+  useUnifiedTopology: true,
+  useNewUrlParser: true
 })
+mongoose.set('useCreateIndex', true);
 
 // instantiate express application object
 const app = express()
