@@ -16,7 +16,7 @@ const handle404 = customErrors.handle404
 //INDEX
 // GET // tasks
 router.get('/tasks',requireToken, (req,res,next) => {
-    res.send(req.user.tasks)
+    res.status(200).json({tasks:req.user.tasks})
 })
 // CREATE
 router.post('/tasks', requireToken, (req,res,next)=>{
