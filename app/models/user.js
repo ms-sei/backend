@@ -6,7 +6,17 @@ const taskSchema = new mongoose.Schema({
   },
   description:{
       type: String
+  },
+  owner:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"User"
+  },
+  from:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User"
   }
+
+  
 },{
   timestamps:true
 })
