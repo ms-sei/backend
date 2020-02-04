@@ -36,12 +36,7 @@ router.get('/examples', requireToken, (req, res, next) => {
     .then(examples => res.status(200).json({examples: examples}))
     .catch(next)
   
-  // // Option 2 get user's examples
-  // // must import User model and User model must have virtual for examples
-  // User.findById(req.user.id) 
-    // .populate('examples')
-    // .then(user => res.status(200).json({ examples: user.examples }))
-    // .catch(next)
+
 })
 
 // SHOW
