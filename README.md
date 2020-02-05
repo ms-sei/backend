@@ -1,10 +1,34 @@
 [![General Assembly Logo](https://camo.githubusercontent.com/1a91b05b8f4d44b5bbfb83abac2b0996d8e26c92/687474703a2f2f692e696d6775722e636f6d2f6b6538555354712e706e67)](https://generalassemb.ly/education/web-development-immersive)
 ![Misk Logo](https://i.ibb.co/KmXhJbm/Webp-net-resizeimage-1.png)
 
-# express-api-template
+# Name Of the App 
+Managing Tasks: Task Management Application.
 
-A template for starting projects with `express` as an API. Includes
-authentication and common middlewares.
+## Introduction 
+since that Time is Money, and Time management is really critical and important to any successful projects within all team who works successfuly in the business feild. 
+
+## Web Application Description 
+Our App is based on Managing tasks between workers/employees.
+The user can choose any other colleague to assign a task to be assigned to.
+
+
+## Wireframes
+// Prototypes..  
+
+
+
+## User Stories
+1. User can assign up / sign up.
+2. User Create new task.
+3. User choose any other users to assigned the task to.
+4. User Edit the task.
+5. User Show the task.
+6. User Delete/Destroy the task 
+
+## Data Modeling
+
+![](images/TaskManagementWireframe.png)
+
 
 ## Installation
 
